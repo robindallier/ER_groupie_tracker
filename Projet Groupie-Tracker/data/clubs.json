@@ -1,0 +1,22 @@
+[
+  {"id":1,"name":"Manchester City","shortName":"Man City","tla":"MCI","website":"https://www.mancity.com","founded":1880,"venue":"Etihad Stadium","crestUrl":"/static/crests/mci.png"},
+  {"id":2,"name":"Manchester United","shortName":"Man Utd","tla":"MUN","website":"https://www.manutd.com","founded":1878,"venue":"Old Trafford","crestUrl":"/static/crests/mun.png"},
+  {"id":3,"name":"Liverpool","shortName":"Liverpool","tla":"LIV","website":"https://www.liverpoolfc.com","founded":1892,"venue":"Anfield","crestUrl":"/static/crests/liv.png"},
+  {"id":4,"name":"Chelsea","shortName":"Chelsea","tla":"CHE","website":"https://www.chelseafc.com","founded":1905,"venue":"Stamford Bridge","crestUrl":"/static/crests/che.png"},
+  {"id":5,"name":"Arsenal","shortName":"Arsenal","tla":"ARS","website":"https://www.arsenal.com","founded":1886,"venue":"Emirates Stadium","crestUrl":"/static/crests/ars.png"},
+  {"id":6,"name":"Tottenham Hotspur","shortName":"Tottenham","tla":"TOT","website":"https://www.tottenhamhotspur.com","founded":1882,"venue":"Tottenham Hotspur Stadium","crestUrl":"/static/crests/tot.png"},
+  {"id":7,"name":"Everton","shortName":"Everton","tla":"EVE","website":"https://www.evertonfc.com","founded":1878,"venue":"Goodison Park","crestUrl":"/static/crests/eve.png"},
+  {"id":8,"name":"Leicester City","shortName":"Leicester","tla":"LEI","website":"https://www.lcfc.com","founded":1884,"venue":"King Power Stadium","crestUrl":"/static/crests/lei.png"},
+  {"id":9,"name":"West Ham United","shortName":"West Ham","tla":"WHU","website":"https://www.whufc.com","founded":1895,"venue":"London Stadium","crestUrl":"/static/crests/whu.png"},
+  {"id":10,"name":"Aston Villa","shortName":"Aston Villa","tla":"AVL","website":"https://www.avfc.co.uk","founded":1874,"venue":"Villa Park","crestUrl":"/static/crests/avl.png"},
+  {"id":11,"name":"Newcastle United","shortName":"Newcastle","tla":"NEW","website":"https://www.nufc.co.uk","founded":1892,"venue":"St James' Park","crestUrl":"/static/crests/new.png"},
+  {"id":12,"name":"Wolverhampton Wanderers","shortName":"Wolves","tla":"WOL","website":"https://www.wolves.co.uk","founded":1877,"venue":"Molineux Stadium","crestUrl":"/static/crests/wol.png"},
+  {"id":13,"name":"Crystal Palace","shortName":"Crystal Palace","tla":"CRY","website":"https://www.cpfc.co.uk","founded":1905,"venue":"Selhurst Park","crestUrl":"/static/crests/cry.png"},
+  {"id":14,"name":"Southampton","shortName":"Southampton","tla":"SOU","website":"https://www.southamptonfc.com","founded":1885,"venue":"St Mary's Stadium","crestUrl":"/static/crests/sou.png"},
+  {"id":15,"name":"Brighton & Hove Albion","shortName":"Brighton","tla":"BHA","website":"https://www.brightonandhovealbion.com","founded":1901,"venue":"Amex Stadium","crestUrl":"/static/crests/bha.png"},
+  {"id":16,"name":"Burnley","shortName":"Burnley","tla":"BUR","website":"https://www.burnleyfootballclub.com","founded":1882,"venue":"Turf Moor","crestUrl":"/static/crests/bur.png"},
+  {"id":17,"name":"Norwich City","shortName":"Norwich","tla":"NOR","website":"https://www.canaries.co.uk","founded":1902,"venue":"Carrow Road","crestUrl":"/static/crests/nor.png"},
+  {"id":18,"name":"Brentford","shortName":"Brentford","tla":"BRE","website":"https://www.brentfordfc.com","founded":1889,"venue":"Gtech Community Stadium","crestUrl":"/static/crests/bre.png"},
+  {"id":19,"name":"Sheffield United","shortName":"Sheff Utd","tla":"SHU","website":"https://www.sufc.co.uk","founded":1889,"venue":"Bramall Lane","crestUrl":"/static/crests/shu.png"},
+  {"id":20,"name":"Fulham","shortName":"Fulham","tla":"FUL","website":"https://www.fulhamfc.com","founded":1879,"venue":"Craven Cottage","crestUrl":"/static/crests/ful.png"}
+]
