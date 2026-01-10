@@ -1,8 +1,14 @@
 body {
     font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    background: url(./assets/camp-nou-fc-2732x2732-19436.jpg);
+    background-size: cover;
+    background-position: center;
     background-attachment: fixed;
-    color: #e0e7ff;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    margin: 0;
+    background-attachment: fixed;
+
     text-align: center;
     margin: 0;
     padding-top: 60px;
