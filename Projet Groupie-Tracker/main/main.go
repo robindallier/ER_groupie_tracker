@@ -15,7 +15,7 @@ func main() {
 	addr := ":8080"
 	fullURL := "http://localhost" + addr
 
-	// Print only the URL (single-line output) as requested
+	
 	fmt.Println(fullURL)
 
 	if err := http.ListenAndServe(addr, mux); err != nil {

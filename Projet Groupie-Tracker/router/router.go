@@ -14,10 +14,14 @@ import (
 func New() *http.ServeMux {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", controller.Home)
+	mux.HandleFunc("/", controller.HomeWithFavorites)
+	mux.HandleFunc("/favorites", controller.Favorites)
 	mux.HandleFunc("/about", controller.About)
 	mux.HandleFunc("/contact", controller.Contact)
 	mux.HandleFunc("/api/clubs", controller.SearchAndFilter)
+	mux.HandleFunc("/add-favorite", controller.AddFavorite)
+	mux.HandleFunc("/remove-favorite", controller.RemoveFavorite)
+	mux.HandleFunc("/clear-favorites", controller.ClearFavorites)
 
 	// Serve static files (images, css) from data/static under /static/
 	staticDir := findStaticDir()

@@ -9,7 +9,8 @@
 <body>
     <div class="container">
         <nav class="navigation">
-            <a href="/">Accueil</a>
+            <a href="/">Fou de foot</a>
+            <a href="/favorites">Mes Favoris</a>
             <a href="/about">À propos</a>
             <a href="/contact">Contact</a>
         </nav>
@@ -19,40 +20,31 @@
         <!-- Filtres et Recherche -->
         <div class="filters-section">
             <h3>Recherche et Filtres</h3>
-            <div class="filter-group">
-                <input type="text" id="searchInput" placeholder="Rechercher un club..." class="search-input">
+            <form method="get" action="/" class="filter-group">
+                <input type="text" name="search" placeholder="Rechercher un club..." class="search-input" value="{{ .SearchQuery }}">
                 
                 <div class="filter-row">
                     <label>
                         Année de fondation
-                        <input type="number" id="minYear" placeholder="Min" min="1800" max="2024">
+                        <input type="number" name="minYear" placeholder="Min" min="1800" max="2024" value="{{ .MinYear }}">
                     </label>
                     <label>
                         à
-                        <input type="number" id="maxYear" placeholder="Max" min="1800" max="2024">
+                        <input type="number" name="maxYear" placeholder="Max" min="1800" max="2024" value="{{ .MaxYear }}">
                     </label>
-                    <button id="filterBtn" class="btn-filter">Rechercher</button>
-                    <button id="resetBtn" class="btn-reset">Réinitialiser les filtres</button>
+                    <button type="submit" class="btn-filter">Rechercher</button>
+                    <a href="/" class="btn-reset">Réinitialiser les filtres</a>
                 </div>
-            </div>
+            </form>
         </div>
 
         <!-- Compteur et options -->
         <div class="controls-section">
             <div>
                 <p>Clubs affichés: <span id="clubCount">{{ len .Clubs }}</span></p>
-                <label>
-                    Résultats par page:
-                    <select id="pageSize">
-                        <option value="3">3</option>
-                        <option value="6" selected>6</option>
-                        <option value="12">12</option>
-                        <option value="20">20</option>
-                    </select>
-                </label>
             </div>
             <div>
-                <button id="favoritesBtn" class="btn-favorites">♥ Mes Favoris (<span id="favoriteCount">0</span>)</button>
+                <a href="/favorites" class="btn-favorites">♥ Mes Favoris (<span id="favoriteCount">{{ len .Favorites }}</span>)</a>
             </div>
         </div>
 
@@ -70,254 +62,20 @@
                     <a href="{{ .Website }}" target="_blank" rel="noopener">Site officiel</a>
                     {{- end }}
                 </div>
-                <button class="btn-favorite" title="Ajouter aux favoris">♡</button>
+                {{- if index $.FavoriteIDs (printf "%d" .ID) }}
+                <form method="post" action="/remove-favorite" style="display: inline;">
+                    <input type="hidden" name="club_id" value="{{ .ID }}">
+                    <button type="submit" class="btn-favorite btn-favorite-active" title="Supprimer des favoris">♥</button>
+                </form>
+                {{- else }}
+                <form method="post" action="/add-favorite" style="display: inline;">
+                    <input type="hidden" name="club_id" value="{{ .ID }}">
+                    <button type="submit" class="btn-favorite" title="Ajouter aux favoris">♡</button>
+                </form>
+                {{- end }}
             </div>
             {{- end }}
         </div>
-
-        <!-- Pagination -->
-        <div class="pagination" id="pagination">
-            <button id="prevBtn" class="btn-pagination">← Précédent</button>
-            <span id="pageInfo">Page 1</span>
-            <button id="nextBtn" class="btn-pagination">Suivant →</button>
-        </div>
-
-        <!-- Section Favoris Déroulable -->
-        <div id="favoritesSection" class="favorites-section collapsed">
-            <div class="favorites-header">
-                <h2>♥ Mes Favoris (<span id="favoriteSectionCount">0</span>)</h2>
-                <button id="toggleFavoritesBtn" class="btn-toggle">▼</button>
-            </div>
-            <div class="favorites-content">
-                <div id="favoritesList" class="favorites-list">
-                    <p>Aucun favori pour le moment</p>
-                </div>
-            </div>
-        </div>
     </div>
-
-    <script>
-        // État global
-        let allClubs = {{ toJSON .Clubs }};
-        let currentPage = 1;
-        let pageSize = 6;
-        let filteredClubs = [...allClubs];
-
-        // Initialisation des favoris
-        function initFavorites() {
-            const stored = localStorage.getItem('favorites');
-            return stored ? JSON.parse(stored) : [];
-        }
-
-        function saveFavorites(favorites) {
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-            updateFavoriteCount();
-        }
-
-        function updateFavoriteCount() {
-            const favorites = initFavorites();
-            document.getElementById('favoriteCount').textContent = favorites.length;
-        }
-
-        // Toggle favori
-        function toggleFavorite(clubId) {
-            let favorites = initFavorites();
-            const index = favorites.indexOf(clubId);
-            if (index > -1) {
-                favorites.splice(index, 1);
-            } else {
-                favorites.push(clubId);
-            }
-            saveFavorites(favorites);
-            updateFavoriteButtons();
-            updateFavoritesModal();
-        }
-
-        // Mise à jour des boutons favoris
-        function updateFavoriteButtons() {
-            const favorites = initFavorites();
-            document.querySelectorAll('.btn-favorite').forEach(btn => {
-                const card = btn.closest('.card');
-                const clubId = parseInt(card.dataset.clubId);
-                if (favorites.includes(clubId)) {
-                    btn.textContent = '♥';
-                    btn.classList.add('favorited');
-                } else {
-                    btn.textContent = '♡';
-                    btn.classList.remove('favorited');
-                }
-            });
-        }
-
-        // Récupération des clubs filtrés
-        async function fetchClubs() {
-            try {
-                const search = document.getElementById('searchInput').value;
-                const minYear = document.getElementById('minYear').value;
-                const maxYear = document.getElementById('maxYear').value;
-                
-                const params = new URLSearchParams({
-                    search: search,
-                    minYear: minYear,
-                    maxYear: maxYear,
-                    page: currentPage,
-                    pageSize: pageSize
-                });
-
-                const response = await fetch(`/api/clubs?${params}`);
-                const data = await response.json();
-                
-                return data;
-            } catch (error) {
-                console.error('Erreur lors de la récupération des clubs:', error);
-                return { clubs: [], total: 0, page: 1, pageSize: pageSize, totalPages: 0 };
-            }
-        }
-
-        // Affichage des clubs
-        async function displayClubs() {
-            const data = await fetchClubs();
-            const clubsList = document.getElementById('clubsList');
-            
-            if (data.clubs.length === 0) {
-                clubsList.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Aucun club trouvé</p>';
-            } else {
-                clubsList.innerHTML = data.clubs.map(club => `
-                    <div class="card" data-club-id="${club.id}">
-                        ${club.crestUrl ? `<img class="home-img" src="${club.crestUrl}" alt="${club.name}">` : ''}
-                        <div class="card-content">
-                            <h2>${club.name}</h2>
-                            <p>${club.shortName} • Fondé: ${club.founded}<br>${club.venue}</p>
-                            ${club.website ? `<a href="${club.website}" target="_blank" rel="noopener">Site officiel</a>` : ''}
-                        </div>
-                        <button class="btn-favorite" title="Ajouter aux favoris">♡</button>
-                    </div>
-                `).join('');
-            }
-
-            document.getElementById('clubCount').textContent = data.total;
-            updatePagination(data);
-            updateFavoriteButtons();
-            attachFavoriteListeners();
-        }
-
-        // Mise à jour pagination
-        function updatePagination(data) {
-            document.getElementById('pageInfo').textContent = `Page ${data.page} / ${data.totalPages}`;
-            document.getElementById('prevBtn').disabled = data.page === 1;
-            document.getElementById('nextBtn').disabled = data.page === data.totalPages || data.totalPages === 0;
-        }
-
-        // Gestionnaires d'événements
-        function attachFavoriteListeners() {
-            document.querySelectorAll('.btn-favorite').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const card = this.closest('.card');
-                    const clubId = parseInt(card.dataset.clubId);
-                    toggleFavorite(clubId);
-                });
-            });
-        }
-
-        document.getElementById('filterBtn').addEventListener('click', async () => {
-            currentPage = 1;
-            await displayClubs();
-        });
-
-        document.getElementById('resetBtn').addEventListener('click', async () => {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('minYear').value = '';
-            document.getElementById('maxYear').value = '';
-            currentPage = 1;
-            await displayClubs();
-        });
-
-        document.getElementById('pageSize').addEventListener('change', async (e) => {
-            pageSize = parseInt(e.target.value);
-            currentPage = 1;
-            await displayClubs();
-        });
-
-        document.getElementById('prevBtn').addEventListener('click', async () => {
-            if (currentPage > 1) {
-                currentPage--;
-                await displayClubs();
-            }
-        });
-
-        document.getElementById('nextBtn').addEventListener('click', async () => {
-            currentPage++;
-            await displayClubs();
-        });
-
-        document.getElementById('favoritesBtn').addEventListener('click', () => {
-            const section = document.getElementById('favoritesSection');
-            section.classList.toggle('collapsed');
-            const btn = document.getElementById('toggleFavoritesBtn');
-            btn.textContent = section.classList.contains('collapsed') ? '▼' : '▲';
-            
-            // Refresh favorites list and smooth scroll when opening
-            if (!section.classList.contains('collapsed')) {
-                updateFavoritesModal();
-                setTimeout(() => {
-                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 300);
-            }
-        });
-
-        const toggleBtn = document.getElementById('toggleFavoritesBtn');
-        toggleBtn.addEventListener('click', () => {
-            const section = document.getElementById('favoritesSection');
-            section.classList.toggle('collapsed');
-            toggleBtn.textContent = section.classList.contains('collapsed') ? '▼' : '▲';
-            
-            if (!section.classList.contains('collapsed')) {
-                updateFavoritesModal();
-                setTimeout(() => {
-                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 300);
-            }
-        });
-
-        function updateFavoritesModal() {
-            const favorites = initFavorites();
-            const favoritesList = document.getElementById('favoritesList');
-            document.getElementById('favoriteSectionCount').textContent = favorites.length;
-            
-            if (favorites.length === 0) {
-                favoritesList.innerHTML = '<p>Aucun favori pour le moment</p>';
-                return;
-            }
-
-            // Render the favorites as full cards (same layout as main list)
-            favoritesList.innerHTML = allClubs
-                .filter(club => favorites.includes(club.id))
-                .map(club => `
-                    <div class="card" data-club-id="${club.id}">
-                        ${club.crestUrl ? `<img class="home-img" src="${club.crestUrl}" alt="${club.name}">` : ''}
-                        <div class="card-content">
-                            <h2>${club.name}</h2>
-                            <p>${club.shortName} • Fondé: ${club.founded}<br>${club.venue}</p>
-                            ${club.website ? `<a href="${club.website}" target="_blank" rel="noopener">Site officiel</a>` : ''}
-                        </div>
-                        <button class="btn-favorite" title="Ajouter aux favoris">♥</button>
-                    </div>
-                `).join('');
-
-            // Reattach listeners for favorite buttons inside the favorites section
-            updateFavoriteButtons();
-            attachFavoriteListeners();
-        }
-
-        function removeFavorite(clubId) {
-            toggleFavorite(clubId);
-            updateFavoritesModal();
-        }
-
-        // Initialisation
-        updateFavoriteCount();
-        displayClubs();
-        updateFavoritesModal();
-    </script>
 </body>
 </html>

@@ -309,6 +309,15 @@ a:hover {
     color: #ef4444;
 }
 
+.btn-favorite-active {
+    color: #ef4444 !important;
+}
+
+.btn-favorite-active:hover {
+    transform: scale(1.2);
+    color: #dc2626 !important;
+}
+
 /* Pagination */
 .pagination {
     display: flex;
@@ -484,4 +493,188 @@ a:hover {
         width: 95%;
         padding: 20px;
     }
+}
+
+/* Section Favoris */
+.favorites-section {
+    background: rgba(30, 28, 62, 0.5);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    border-radius: 16px;
+    padding: 0;
+    margin: 30px auto;
+    max-width: 900px;
+    width: 90%;
+    overflow: hidden;
+}
+
+.favorites-section.collapsed .favorites-content {
+    display: none;
+}
+
+.favorites-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: rgba(30, 28, 62, 0.7);
+    border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+    cursor: pointer;
+}
+
+.favorites-header h2 {
+    margin: 0;
+    flex: 1;
+}
+
+.btn-toggle {
+    background: none;
+    border: none;
+    color: #c4b5fd;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: transform 0.3s ease;
+}
+
+.favorites-section.collapsed .btn-toggle {
+    transform: rotate(180deg);
+}
+
+.favorites-content {
+    padding: 20px;
+}
+
+.favorites-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.favorite-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(15, 12, 41, 0.6);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    border-radius: 10px;
+    padding: 15px;
+    transition: all 0.3s ease;
+}
+
+.favorite-item:hover {
+    border-color: rgba(168, 85, 247, 0.5);
+    background: rgba(15, 12, 41, 0.8);
+}
+
+.favorite-info {
+    flex: 1;
+}
+
+.favorite-info h3 {
+    margin: 0 0 5px 0;
+    color: #c4b5fd;
+    font-size: 1.1rem;
+}
+
+.favorite-info p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.btn-remove-favorite {
+    background: linear-gradient(45deg, #ef4444, #f87171);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 8px 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    margin-left: 10px;
+}
+
+.btn-remove-favorite:hover {
+    background: linear-gradient(45deg, #dc2626, #f87171);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+}
+
+/* Page Favoris */
+.empty-favorites {
+    text-align: center;
+    padding: 60px 20px;
+    color: #e0e7ff;
+}
+
+.empty-favorites p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.btn-back-to-clubs {
+    display: inline-block;
+    background: linear-gradient(45deg, #a855f7, #3b82f6);
+    color: white;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-back-to-clubs:hover {
+    background: linear-gradient(45deg, #c084fc, #60a5fa);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.6);
+}
+
+.favorites-grid {
+    width: 95%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 18px;
+    align-items: start;
+}
+
+.btn-remove-favorite-full {
+    width: 100%;
+    background: linear-gradient(45deg, #ef4444, #f87171);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 10px 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    margin-top: 10px;
+}
+
+.btn-remove-favorite-full:hover {
+    background: linear-gradient(45deg, #dc2626, #f87171);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+}
+
+.btn-clear-favorites {
+    padding: 10px 20px;
+    background: linear-gradient(45deg, #ef4444, #f87171);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.btn-clear-favorites:hover {
+    background: linear-gradient(45deg, #dc2626, #f87171);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
 }

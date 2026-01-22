@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mes Favoris</title>
+    <link rel="stylesheet" href="/static/stylecss/stylecss.css">
+</head>
+ 
+<body>
+    <div class="container">
+        <nav class="navigation">
+            <a href="/">Fou de foot</a>
+            <a href="/favorites">Mes Favoris</a>
+            <a href="/about">À propos</a>
+            <a href="/contact">Contact</a>
+        </nav>
+
+        <h1>♥ Mes Favoris</h1>
+
+        <!-- Compteur -->
+        <div class="controls-section">
+            <div>
+                <p>Clubs favoris: <span id="favoriteCount">{{ len .Favorites }}</span></p>
+            </div>
+            {{- if gt (len .Favorites) 0 }}
+            <div>
+                <form method="post" action="/clear-favorites" style="display: inline;">
+                    <button type="submit" class="btn-clear-favorites">Effacer tous les favoris</button>
+                </form>
+            </div>
+            {{- end }}
+        </div>
+
+        <!-- Affichage des favoris -->
+        {{- if eq (len .Favorites) 0 }}
+        <div class="empty-favorites">
+            <p>Vous n'avez pas encore de favoris.</p>
+            <a href="/" class="btn-back-to-clubs">Retour aux clubs</a>
+        </div>
+        {{- else }}
+        <div class="favorites-grid">
+            {{- range .Favorites }}
+            <div class="card">
+                {{- if .CrestURL }}
+                <img class="home-img" src="{{ .CrestURL }}" alt="{{ .Name }}">
+                {{- end }}
+                <div class="card-content">
+                    <h2>{{ .Name }}</h2>
+                    <p>{{ .ShortName }} • Fondé: {{ .Founded }}<br>{{ .Venue }}</p>
+                    {{- if .Website }}
+                    <a href="{{ .Website }}" target="_blank" rel="noopener">Site officiel</a>
+                    {{- end }}
+                </div>
+                <form method="post" action="/remove-favorite" style="display: inline; width: 100%;">
+                    <input type="hidden" name="club_id" value="{{ .ID }}">
+                    <button type="submit" class="btn-remove-favorite-full">✕ Supprimer des favoris</button>
+                </form>
+            </div>
+            {{- end }}
+        </div>
+        {{- end }}
+    </div>
+</body>
+</html>
